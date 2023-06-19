@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'Sceanarios',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
-    'Api.apps.ApiConfig',
     'teatcher'
 ]
 REST_FRAMEWORK = {
@@ -117,7 +116,7 @@ WSGI_APPLICATION = 'leadermanger.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-   'default': {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'scenario',
         'USER': 'root',
