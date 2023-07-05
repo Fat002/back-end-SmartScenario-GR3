@@ -1,0 +1,1 @@
+web: gunicorn leadermanger.wsgi:application --log-file -
