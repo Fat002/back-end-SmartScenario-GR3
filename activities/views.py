@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Activities,Resource
+from .models import Activities, Resource
 from .serializers import ActivitiesSerializer
 from .serializers import ResourcesSerializer
 from django.shortcuts import get_object_or_404
@@ -53,7 +53,8 @@ class ActivitiesCreateView(APIView):
                 'lesson': activity.lesson,
                 'level': activity.level,
                 'contenu': activity.contenu,
-                'created_by': activity.created_by.id  # Assuming 'created_by' is a ForeignKey field to the 'Teacher' model
+                # Assuming 'created_by' is a ForeignKey field to the 'Teacher' model
+                'created_by': activity.created_by.id
             },
             'resources': [{
                 'id': resource.id,
@@ -62,12 +63,15 @@ class ActivitiesCreateView(APIView):
             } for resource in created_resources]
         }
         return Response(response_data, status=201)
+
+
 class ActivitiesListView(APIView):
     def get(self, request):
         activities = Activities.objects.all()
         serializer = ActivitiesSerializer(activities, many=True)
         return Response(serializer.data)
-    
+
+
 class ActivityDeteteView(APIView):
     def post(self, request, pk):
         try:
@@ -80,25 +84,27 @@ class ActivityDeteteView(APIView):
         except Activities.DoesNotExist:
             return Response({'error': 'Activity not found.'}, status=404)
 
+
 class OneActivityDetailView(APIView):
     def get(self, request, pk):
         activity = get_object_or_404(Activities, id=pk)
         activity_serializer = ActivitiesSerializer(activity)
         resources = Resource.objects.filter(activity=activity)
         resource_data = []
-        
+
         for resource in resources:
             resource_data.append({
                 'resource_id': resource.id,
                 'content': resource.content
             })
-        
+
         response_data = {
             'activity': activity_serializer.data,
             'resources': resource_data
         }
-        
+
         return Response(response_data)
+
 
 class UpdateActivityView(APIView):
     def post(self, request, pk):
@@ -106,7 +112,7 @@ class UpdateActivityView(APIView):
             activity = Activities.objects.get(id=pk)
         except Activities.DoesNotExist:
             return Response({"error": "Activity not found"}, status=status.HTTP_404_NOT_FOUND)
-        request.data['created_by']=1
+        request.data['created_by'] = 1
         serializer = ActivitiesSerializer(activity, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -118,12 +124,25 @@ class UpdateActivityView(APIView):
             content = resource_data.get('content')
 
             try:
-                if content :
-                    resource = Resource.objects.get(pk=resource_id, activity=activity)
+                if content:
+                    resource = Resource.objects.get(
+                        pk=resource_id, activity=activity)
                     resource.content = content
                     resource.save()
             except Resource.DoesNotExist:
-               return Response({"no": "good"}, status=200)
+                return Response({"no": "good"}, status=200)
         return Response({"ok": "good"}, status=200)
 
+class ActivitySearchAPIView(APIView):
+    def get(self, request):
+        # Get the name parameter from the request URL
+        name = request.GET.get('name')
 
+        # Search for activities by name
+        activities = Activities.objects.filter(name__icontains=name)
+
+        # Serialize the activities queryset to return in the response
+        serialized_data = ActivitiesSerializer(activities, many=True).data
+
+        # Return the response with the serialized activity data
+        return Response(serialized_data)
