@@ -135,14 +135,8 @@ class UpdateActivityView(APIView):
 
 class ActivitySearchbynameAPIView(APIView):
     def get(self, request):
-        # Get the name parameter from the request URL
+       
         name = request.GET.get('name')
-
-        # Search for activities by name
         activities = Activities.objects.filter(name__icontains=name)
-
-        # Serialize the activities queryset to return in the response
         serialized_data = ActivitiesSerializer(activities, many=True).data
-
-        # Return the response with the serialized activity data
         return Response(serialized_data)
