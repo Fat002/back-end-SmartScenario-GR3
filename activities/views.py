@@ -140,3 +140,18 @@ class ActivitySearchbynameAPIView(APIView):
         activities = Activities.objects.filter(name__icontains=name)
         serialized_data = ActivitiesSerializer(activities, many=True).data
         return Response(serialized_data)
+class SearchActivities(APIView):
+    def get(self, request):
+        niveau = request.query_params.get('niveau')
+        matiere = request.query_params.get('matiere')
+
+        activities = Activities.objects.all()
+
+        if niveau:
+            activities = activities.filter(niveau=niveau)
+
+        if matiere:
+            activities = activities.filter(matiere=matiere)
+
+        serializer = ActivitiesSerializer(activities, many=True)
+        return Response(serializer.data)
