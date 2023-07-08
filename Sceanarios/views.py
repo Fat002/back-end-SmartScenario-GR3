@@ -281,6 +281,21 @@ class ScenarioSearchbynameAPIView(APIView):
         scenarios = Scenario.objects.filter(name__icontains=name)
         serialized_data = ScenarioSerializer(scenarios, many=True).data
         return Response(serialized_data)
+class SearchScenarios(APIView):
+    def get(self, request):
+        niveau = request.query_params.get('niveau')
+        matiere = request.query_params.get('matiere')
+
+        scenarios = Scenario.objects.all()
+
+        if niveau:
+            scenarios = scenarios.filter(niveau=niveau)
+
+        if matiere:
+            scenarios = scenarios.filter(matiere=matiere)
+
+        serializer = ImageScenarioSerializer(scenarios, many=True)
+        return Response(serializer.data)
  
 
 
