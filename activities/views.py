@@ -133,7 +133,7 @@ class UpdateActivityView(APIView):
                 return Response({"no": "good"}, status=200)
         return Response({"ok": "good"}, status=200)
 
-class ActivitySearchAPIView(APIView):
+class ActivitySearchbynameAPIView(APIView):
     def get(self, request):
         # Get the name parameter from the request URL
         name = request.GET.get('name')
