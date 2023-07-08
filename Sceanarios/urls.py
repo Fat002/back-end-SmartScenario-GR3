@@ -1,4 +1,4 @@
-from .views import CreateScenarioFirstAPIView,CreateScenarioSecondAPIView,CreateScenarioThirdAPIView,ScenarioDataAPIView,ImageScenarioCreateAPIView,ScenarioListAPIView,ScenarioDeleteAPIView,ScenarioFirstOneEditAPIView,ScenarioUpdateFirstPartAPIView,UpdateSecondPartAPIView,UpdateThirdPart
+from .views import CreateScenarioFirstAPIView,CreateScenarioSecondAPIView,CreateScenarioThirdAPIView,ScenarioDataAPIView,ImageScenarioCreateAPIView,ScenarioListAPIView,ScenarioDeleteAPIView,ScenarioFirstOneEditAPIView,ScenarioUpdateFirstPartAPIView,UpdateSecondPartAPIView,UpdateThirdPart,ScenarioSearchbynameAPIView
 from django.urls import path
 
 urlpatterns = [
@@ -13,6 +13,7 @@ urlpatterns = [
     path('updatefirstpart/', ScenarioUpdateFirstPartAPIView.as_view(), name='scenario-updateone'),
     path('updatesecondpart/', UpdateSecondPartAPIView.as_view(), name='scenario-updatetwo'),
     path('updatethirdpart/', UpdateThirdPart.as_view(), name='scenario-updatethree'),
+    path('api/activities/', ScenarioSearchbynameAPIView.as_view(), name='scenario-search-name'),
+]
 
   
-]

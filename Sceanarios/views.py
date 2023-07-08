@@ -274,7 +274,13 @@ class UpdateThirdPart(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
+class ScenarioSearchbynameAPIView(APIView):
+    def get(self, request):
+       
+        name = request.GET.get('name')
+        scenarios = Scenario.objects.filter(name__icontains=name)
+        serialized_data = ScenarioSerializer(scenarios, many=True).data
+        return Response(serialized_data)
  
 
 
