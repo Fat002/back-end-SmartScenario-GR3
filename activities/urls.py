@@ -1,4 +1,5 @@
-from .views import ActivitiesCreateView,ActivitiesListView,ActivityDeteteView,OneActivityDetailView,UpdateActivityView,ActivitySearchAPIView
+from .views import ActivitiesCreateView,ActivitiesListView,ActivityDeteteView,OneActivityDetailView,UpdateActivityView,ActivitySearchbynameAPIView
+
 from django.urls import path
 
 urlpatterns = [
@@ -7,5 +8,5 @@ urlpatterns = [
     path('delete/<int:pk>/', ActivityDeteteView.as_view(), name='delete-activities'),
     path('edit/<int:pk>/', OneActivityDetailView.as_view(), name='edit-activities'),
     path('update/<int:pk>/', UpdateActivityView.as_view(), name='updates-activities'),
-    path('api/activities/', ActivitySearchAPIView.as_view(), name='activity-search'),
+    path('api/activities/', ActivitySearchbynameAPIView.as_view(), name='activity-search'),
 ]
